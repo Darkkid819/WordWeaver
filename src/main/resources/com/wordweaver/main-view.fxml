@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER" styleClass="bottom-pane">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="bottom-pane" BorderPane.alignment="CENTER">
          <children>
             <TextField promptText="Please enter a word" />
             <TextField promptText="Please enter text length" />
@@ -24,14 +23,14 @@
       </HBox>
    </bottom>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER" styleClass="middle-pane">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="middle-pane" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <TextArea prefHeight="200.0" HBox.hgrow="ALWAYS" />
+            <TextArea fx:id="chatTextArea" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets />

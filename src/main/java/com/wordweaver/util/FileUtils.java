@@ -30,7 +30,7 @@ public class FileUtils {
         }
     }
 
-    public static void createDirectoryIfNotExists(String directoryPath) throws IOException {
+    public static void createDirectoryIfNotExists(String directoryPath) {
         File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();

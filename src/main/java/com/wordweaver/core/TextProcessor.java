@@ -1,13 +1,16 @@
 package com.wordweaver.core;
 
+import com.wordweaver.util.BlacklistUtils;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextProcessor {
 
-    public static String[] tokenize(String inputText) {
+    private static String[] tokenize(String inputText) {
         Pattern pattern = Pattern.compile("\\b\\w+\\b");
         Matcher matcher = pattern.matcher(inputText);
 
@@ -19,7 +22,7 @@ public class TextProcessor {
         return words.toArray(new String[0]);
     }
 
-    public static String removeUnwantedCharacters(String inputText, String[] unwantedCharacters) {
+    private static String removeUnwantedCharacters(String inputText, String[] unwantedCharacters) {
         if (unwantedCharacters == null || unwantedCharacters.length == 0) {
             return inputText;
         }
@@ -28,23 +31,14 @@ public class TextProcessor {
         return inputText.replaceAll(regex, "");
     }
 
-    public static String[] filterWords(String[] words, String[] blacklist) {
-        if (blacklist == null || blacklist.length == 0) {
+    private static String[] filterWords(String[] words, BlacklistUtils blacklistUtils) {
+        if (blacklistUtils == null) {
             return words;
         }
 
-        List<String> filteredWords = new ArrayList<>();
+        List<String> filteredWords = new LinkedList<>();
         for (String word : words) {
-            boolean isBlacklisted = false;
-
-            for (String forbiddenWord : blacklist) {
-                if (word.equalsIgnoreCase(forbiddenWord)) {
-                    isBlacklisted = true;
-                    break;
-                }
-            }
-
-            if (!isBlacklisted) {
+            if (!blacklistUtils.isBlacklisted(word)) {
                 filteredWords.add(word);
             }
         }
@@ -52,14 +46,9 @@ public class TextProcessor {
         return filteredWords.toArray(new String[0]);
     }
 
-    public static String[] processMultipleTexts(List<String> texts, String[] unwantedCharacters, String[] blacklist) {
-        StringBuilder combinedText = new StringBuilder();
 
-        for (String text : texts) {
-            combinedText.append(text).append(" ");
-        }
-
-        String inputText = combinedText.toString();
+    public static String[] processText(List<String> texts, String[] unwantedCharacters, BlacklistUtils blacklistUtils) {
+        String inputText = String.join(" ", texts);
 
         if (unwantedCharacters != null && unwantedCharacters.length > 0) {
             inputText = removeUnwantedCharacters(inputText, unwantedCharacters);
@@ -67,8 +56,8 @@ public class TextProcessor {
 
         String[] words = tokenize(inputText);
 
-        if (blacklist != null && blacklist.length > 0) {
-            words = filterWords(words, blacklist);
+        if (blacklistUtils != null) {
+            words = filterWords(words, blacklistUtils);
         }
 
         return words;
