@@ -5,4 +5,6 @@ module com.wordweaver {
                             
     opens com.wordweaver to javafx.fxml;
     exports com.wordweaver;
+    exports com.wordweaver.controller;
+    opens com.wordweaver.controller to javafx.fxml;
 }

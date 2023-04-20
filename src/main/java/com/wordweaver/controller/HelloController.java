@@ -1,4 +1,4 @@
-package com.wordweaver;
+package com.wordweaver.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

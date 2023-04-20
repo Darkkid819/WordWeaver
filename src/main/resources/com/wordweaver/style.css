@@ -1,0 +1,39 @@
+.root {
+    -fx-background-color: #F8F8F8;
+}
+
+.middle-pane {
+    -fx-background-color: #444653;
+}
+
+.bottom-pane {
+    -fx-background-color: #363642;
+}
+
+.text-area {
+    -fx-background-color: transparent;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-border-radius: 0;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-control-inner-background: #444653;
+    -fx-background-insets: 0;
+}
+
+.text-area .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.text-field {
+    -fx-background-color: #444653;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
