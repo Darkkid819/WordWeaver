@@ -10,11 +10,34 @@
     -fx-background-color: #363642;
 }
 
+.button {
+    -fx-background-color: transparent;
+    -fx-font-family: "Calibri";
+    -fx-font-size: 14px;
+    -fx-text-fill: #878CA0;
+    -fx-border-color: #565869;
+    -fx-border-radius: 5px;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button:hover {
+    -fx-background-color: #40414F;
+    -fx-text-fill: #9ca3b9;
+    -fx-border-color: #72748C;
+}
+
+.button:pressed {
+    -fx-background-color: #2E2E38;
+    -fx-text-fill: #686D7A;
+    -fx-border-color: #464854;
+}
+
 .text-area {
     -fx-background-color: transparent;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Calibri";
     -fx-font-size: 14px;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #CCCBD0;
     -fx-border-radius: 0;
     -fx-border-color: transparent;
     -fx-focus-color: transparent;
@@ -29,11 +52,16 @@
 }
 
 .text-field {
-    -fx-background-color: #444653;
-    -fx-font-family: "Arial";
+    -fx-background-color: #3F414E;
+    -fx-font-family: "Calibri";
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #CCCBD0;
+    -fx-prompt-text-fill: #878CA0;
     -fx-border-color: transparent;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+
+.context-menu {
+    -fx-background-color: #f0f0f0;
 }

@@ -9,13 +9,24 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="bottom-pane" BorderPane.alignment="CENTER">
          <children>
-            <TextField promptText="Please enter a word" />
-            <TextField promptText="Please enter text length" />
-            <Button mnemonicParsing="false" text="Submit" />
+            <TextField fx:id="keywordTextField" prefWidth="200.0" promptText="Please enter a word" />
+            <TextField fx:id="lengthTextField" prefWidth="200.0" promptText="Please enter text length" />
+            <Button fx:id="submitButton" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#submit" onMousePressed="#changeImagePressed" onMouseReleased="#changeImageReleased" prefWidth="100.0" text="Submit">
+               <graphic>
+                  <ImageView fx:id="submitImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@submit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
          </children>
          <padding>
             <Insets left="75.0" right="75.0" />
@@ -27,10 +38,10 @@
          <children>
             <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
-                  <Image url="@logo.png" />
+                  <Image url="@prompt-logo.png" />
                </image>
             </ImageView>
-            <TextArea fx:id="chatTextArea" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
+            <TextArea fx:id="chatTextArea" editable="false" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets />

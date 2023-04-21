@@ -24,6 +24,7 @@ public class BlacklistUtils {
         return blacklist.contains(word.toLowerCase());
     }
 
+    // return blacklist in case of multiple blacklists
     public Set<String> getBlacklist() {
         return blacklist;
     }

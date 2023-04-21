@@ -5,11 +5,13 @@ import com.wordweaver.util.BlacklistUtils;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextProcessor {
 
+    // Method to split a string into words
     private static String[] tokenize(String inputText) {
         Pattern pattern = Pattern.compile("\\b\\w+\\b");
         Matcher matcher = pattern.matcher(inputText);
@@ -31,23 +33,29 @@ public class TextProcessor {
         return inputText.replaceAll(regex, "");
     }
 
-    private static String[] filterWords(String[] words, BlacklistUtils blacklistUtils) {
+    // Method to filter out blacklisted words from an array of words
+    private static String[] filterWords(String[] words, BlacklistUtils blacklistUtils, BiConsumer<Integer, Integer> progressCallback) {
         if (blacklistUtils == null) {
             return words;
         }
 
         List<String> filteredWords = new LinkedList<>();
-        for (String word : words) {
+        int totalWords = words.length;
+        for (int i = 0; i < totalWords; i++) {
+            String word = words[i];
             if (!blacklistUtils.isBlacklisted(word)) {
                 filteredWords.add(word);
             }
+
+            // Update progress
+            progressCallback.accept(i + 1, totalWords);
         }
 
         return filteredWords.toArray(new String[0]);
     }
 
-
-    public static String[] processText(List<String> texts, String[] unwantedCharacters, BlacklistUtils blacklistUtils) {
+    // Method to process text by tokenizing, filtering, and removing unwanted characters
+    public static String[] processText(List<String> texts, String[] unwantedCharacters, BlacklistUtils blacklistUtils, BiConsumer<Integer, Integer> progressCallback) {
         String inputText = String.join(" ", texts);
 
         if (unwantedCharacters != null && unwantedCharacters.length > 0) {
@@ -57,7 +65,7 @@ public class TextProcessor {
         String[] words = tokenize(inputText);
 
         if (blacklistUtils != null) {
-            words = filterWords(words, blacklistUtils);
+            words = filterWords(words, blacklistUtils, progressCallback);
         }
 
         return words;

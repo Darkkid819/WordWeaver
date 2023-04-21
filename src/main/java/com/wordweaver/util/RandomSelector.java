@@ -10,10 +10,12 @@ public class RandomSelector {
         this.random = new Random();
     }
 
+    // Constructor to allow for a seed to be passed in for testing purposes.
     public RandomSelector(long seed) {
         this.random = new Random(seed);
     }
 
+    // Method to select a weighted random word from a list of words and their frequencies.
     public String selectWeightedRandom(List<String> words, List<Integer> frequencies) {
         if (words == null || frequencies == null || words.size() != frequencies.size()) {
             throw new IllegalArgumentException("Words and frequencies must be non-null and of the same size.");

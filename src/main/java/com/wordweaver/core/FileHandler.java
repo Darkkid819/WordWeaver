@@ -1,42 +1,50 @@
 package com.wordweaver.core;
 
-import com.wordweaver.util.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.function.BiConsumer;
 
 public class FileHandler {
 
-    public static List<String> readTextFiles(String folderPath) throws IOException {
-        List<String> allTexts = new LinkedList<>();
+    public static List<String> readTextFiles(String folderPath, BiConsumer<Integer, Integer> progressCallback) throws IOException {
         File folder = new File(folderPath);
-        Stack<File> stack = new Stack<>();
+        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
-        if (folder.isDirectory()) {
-            stack.push(folder);
+        if (files == null) {
+            throw new IOException("Invalid folder path: " + folderPath);
         }
 
-        while (!stack.isEmpty()) {
-            File currentFile = stack.pop();
+        List<String> texts = new LinkedList<>();
+        int totalWords = 0;
+        int currentWords = 0;
 
-            if (currentFile.getName().equals("blacklist.txt")) {
-                continue;
+        // Calculate the total number of words in all files
+        for (File file : files) {
+            if (file.isFile()) {
+                String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+                totalWords += content.split("\\s+").length;
             }
+        }
 
-            if (currentFile.isDirectory()) {
-                for (File file : currentFile.listFiles()) {
-                    stack.push(file);
+        for (File file : files) {
+            if (file.isFile()) {
+                String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+                texts.add(content);
+                String[] words = content.split("\\s+");
+                for (String word : words) {
+                    currentWords++;
+
+                    // Update progress
+                    progressCallback.accept(currentWords, totalWords);
                 }
-            } else if (isTextFile(currentFile)) {
-                String content = FileUtils.readFileToString(currentFile.getPath());
-                allTexts.add(content);
             }
         }
 
-        return allTexts;
+        return texts;
     }
 
     private static boolean isTextFile(File file) {
