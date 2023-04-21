@@ -2,7 +2,6 @@ package com.wordweaver.core;
 
 import com.wordweaver.util.BlacklistUtils;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -13,10 +12,11 @@ public class TextProcessor {
 
     // Method to split a string into words
     private static String[] tokenize(String inputText) {
-        Pattern pattern = Pattern.compile("\\b\\w+\\b");
+        //includes words and punctuation
+        Pattern pattern = Pattern.compile("\\b\\w+([’']\\w+)?\\b|[.,!?;:`]");
         Matcher matcher = pattern.matcher(inputText);
 
-        List<String> words = new ArrayList<>();
+        List<String> words = new LinkedList<>();
         while (matcher.find()) {
             words.add(matcher.group());
         }

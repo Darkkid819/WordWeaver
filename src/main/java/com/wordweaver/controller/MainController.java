@@ -1,10 +1,11 @@
 package com.wordweaver.controller;
 
-import com.wordweaver.Main;
 import com.wordweaver.core.TextGenerator;
+import com.wordweaver.model.MainLink;
+import com.wordweaver.util.GlobalVariables;
+import com.wordweaver.util.TextToSpeech;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -13,10 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class MainController implements Initializable {
+public class MainController {
 
     @FXML
     TextArea chatTextArea;
@@ -27,38 +25,32 @@ public class MainController implements Initializable {
     @FXML
     Button submitButton;
     @FXML
+    Button ttsButton;
+    @FXML
     ImageView submitImageView;
+    @FXML
+    ImageView speechImageView;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        StringBuilder textContent = new StringBuilder();
-//        String outputFilePath = Main.outputFolder + "/" + Main.outputFileName;
-//        File inputFile = new File(outputFilePath);
-//
-//        try (Scanner lines = new Scanner(inputFile)) {
-//            while (lines.hasNextLine()) {
-//                Scanner words = new Scanner(lines.nextLine());
-//                while (words.hasNext()) {
-//                    textContent.append(words.next()).append(" ");
-//                }
-//                words.close();
-//            }
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        chatTextArea.setText("textContent.toString()");
+    @FXML
+    private void changeSubmitImagePressed(MouseEvent event) {
+        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit-pressed.png")));
     }
 
     @FXML
-    private void changeImagePressed(MouseEvent event) {
-        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/submit-pressed.png")));
+    private void changeSubmitImageReleased(MouseEvent event) {
+        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit.png")));
     }
 
     @FXML
-    private void changeImageReleased(MouseEvent event) {
-        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/submit.png")));
+    private void changeSpeechImagePressed(MouseEvent event) {
+        speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech-pressed.png")));
     }
+
+    @FXML
+    private void changeSpeechImageReleased(MouseEvent event) {
+        speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech.png")));
+    }
+
 
     @FXML
     private void submit(ActionEvent event) {
@@ -67,35 +59,40 @@ public class MainController implements Initializable {
 
         if (keyword.isEmpty() || lengthString.isEmpty()) {
             // One or both fields are empty, show a warning dialog
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Missing input");
-            alert.setContentText("Please enter a keyword and a text length.");
-            alert.showAndWait();
-        } else if (!keyword.matches("\\w+")) {
+            showAlert(Alert.AlertType.WARNING, "Missing input", "Please enter a keyword and a text length.");
+        } else if (!keyword.matches("[\\w]+([’']\\w+)?([.,!?;:]+)?")) {
             // Keyword is not a single word, show a warning dialog
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Invalid keyword");
-            alert.setContentText("Please enter a single word as the keyword.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Invalid keyword", "Please enter a single word as the keyword.");
         } else if (!lengthString.matches("\\d+")) {
             // Length is not a valid number, show a warning dialog
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Invalid text length");
-            alert.setContentText("Please enter a valid number as the text length.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Invalid text length", "Please enter a valid number as the text length.");
+        } else if (GlobalVariables.getInstance().getWordWeaver() == null) {
+            // Main.wordWeaver is null, show an error dialog
+            showAlert(Alert.AlertType.ERROR, "Error", "WordWeaver is not initialized.");
         } else {
-            try {
+            MainLink mainLink = GlobalVariables.getInstance().getWordWeaver().findMainLink(keyword);
+            if (mainLink == null) {
+                // MainLinkedList doesn't contain the keyword, show a warning dialog
+                showAlert(Alert.AlertType.WARNING, "Invalid keyword", "Please enter a valid keyword.");
+            } else {
                 int length = Integer.parseInt(lengthString);
-                TextGenerator textGenerator = new TextGenerator(Main.wordWeaver);
+                TextGenerator textGenerator = new TextGenerator(GlobalVariables.getInstance().getWordWeaver());
                 String paragraph = textGenerator.generateParagraph(keyword, length);
                 chatTextArea.setText(paragraph);
-            } catch (NullPointerException e) {
-                // MainLinkedList doesn't contain the keyword, show a warning dialog
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText("Invalid keyword");
-                alert.setContentText("Please enter a valid keyword.");
-                alert.showAndWait();
             }
         }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void speak(ActionEvent event) {
+        String paragraph = chatTextArea.getText();
+        TextToSpeech.speak(paragraph);
     }
 }
