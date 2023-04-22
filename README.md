@@ -49,4 +49,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-This project uses [FreeTTS](https://freetts.sourceforge.io/) for text-to-speech functionality.
+- This project uses [FreeTTS](https://freetts.sourceforge.io/) for text-to-speech functionality.
+- The blacklist used in the project is sourced from [List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words](https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words).
