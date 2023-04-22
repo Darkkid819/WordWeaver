@@ -1,50 +1,52 @@
 # WordWeaver
-A Java-based text generator application that processes and analyzes the input text, storing all the words and their occurrences in a custom data structure. The program generates a random paragraph of user-defined length based on the input text.
 
-# Features
-Processes input text files and analyzes word frequencies
-Utilizes custom data structure (linked lists) for efficient storage and retrieval
-Filters and censors blacklisted words from the input text
-Generates random paragraphs based on input text
-Saves generated paragraphs to an output file
-Supports processing multiple text files using a stack
+A JavaFX application that generates human-like text using the Markov Chain model. The application reads input text files, processes them, and trains a Markov Chain model to generate realistic paragraphs. It also features text-to-speech functionality using FreeTTS.
 
-# Getting Started
-## Prerequisites
-JDK 11 or later
-Maven (optional)
+![Screenshot](screenshots/screenshot.png)
 
-## Building and Running
-1. Clone this repository.
-```console
+## Features
+
+- Train a Markov Chain model with your input text files
+- Generate realistic paragraphs based on the trained model
+- Text-to-speech functionality using FreeTTS
+- Import additional text files to update the model
+- Save generated paragraphs as text files
+- Easily manage blacklisted words
+- Customize the output by adjusting the paragraph length and randomness factor
+- Stylish and easy-to-use GUI
+
+## Installation
+
+1. Clone the repository:
+
+```
 git clone https://github.com/Darkkid819/WordWeaver.git
-cd WordWeaver
 ```
 
-2. Compile the project.
-Using Maven:
-```console
-mvn compile
-```
+2. Import the project into your favorite IDE (IntelliJ, Eclipse, etc.)
 
-Or using javac:
-```console
-javac -d target/classes src/*.java
-```
+3. Build and run the project.
 
-3. Run the application.
+## Usage
 
-Using Maven:
-```console
-mvn exec:java -Dexec.mainClass="com.wordweaver.Main"
-```
+1. Place your input text files into the `data` folder.
 
-Or using java:
-```console
-java -cp target/classes com.wordweaver.Main
-```
+2. Launch the application.
 
-4. The generated output will be saved to the output folder as output.txt.
+3. Adjust the output settings (paragraph length and randomness factor) as needed.
+
+4. Click the "Submit" button to generate a paragraph based on your input text files.
+
+5. Use the microphone button to listen to the generated text.
+
+6. Save the generated paragraph as a text file using the "Save" or "Save As" options in the menu.
+
+7. Import additional text files through the "Import" option in the menu.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+This project uses [FreeTTS](https://freetts.sourceforge.io/) for text-to-speech functionality.
