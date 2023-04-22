@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,8 +23,10 @@ import javafx.stage.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController implements Initializable {
 
     @FXML
     TextArea chatTextArea;
@@ -52,24 +55,35 @@ public class MainController {
     @FXML
     MenuItem aboutMenuItem;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        chatTextArea.setOnContextMenuRequested(event -> event.consume());
+        keywordTextField.setOnContextMenuRequested(event -> event.consume());
+        lengthTextField.setOnContextMenuRequested(event -> event.consume());
+    }
+
     @FXML
     private void changeSubmitImagePressed(MouseEvent event) {
-        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit-pressed.png")));
+        if (event.isPrimaryButtonDown())
+            submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit-pressed.png")));
     }
 
     @FXML
     private void changeSubmitImageReleased(MouseEvent event) {
-        submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit.png")));
+        if (event.isPrimaryButtonDown())
+            submitImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/submit.png")));
     }
 
     @FXML
     private void changeSpeechImagePressed(MouseEvent event) {
-        speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech-pressed.png")));
+        if (event.isPrimaryButtonDown())
+            speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech-pressed.png")));
     }
 
     @FXML
     private void changeSpeechImageReleased(MouseEvent event) {
-        speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech.png")));
+        if (event.isPrimaryButtonDown())
+            speechImageView.setImage(new Image(getClass().getResourceAsStream("/com/wordweaver/images/speech.png")));
     }
 
 
