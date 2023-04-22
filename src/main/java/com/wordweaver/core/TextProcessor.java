@@ -48,7 +48,8 @@ public class TextProcessor {
             }
 
             // Update progress
-            progressCallback.accept(i + 1, totalWords);
+            if (progressCallback != null)
+                progressCallback.accept(i + 1, totalWords);
         }
 
         return filteredWords.toArray(new String[0]);
@@ -64,9 +65,8 @@ public class TextProcessor {
 
         String[] words = tokenize(inputText);
 
-        if (blacklistUtils != null) {
+        if (blacklistUtils != null)
             words = filterWords(words, blacklistUtils, progressCallback);
-        }
 
         return words;
     }

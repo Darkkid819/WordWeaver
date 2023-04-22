@@ -9,7 +9,7 @@ public class GlobalVariables {
     private MainLinkedList wordWeaver;
     private String dataFolder = "data";
     private String outputFolder = "output";
-    private String outputFileName = FileUtils.generateUniqueFileName();
+    private String outputFileName = "output.txt";
     private String blacklist = "blacklist.txt";
 
     private GlobalVariables() {
