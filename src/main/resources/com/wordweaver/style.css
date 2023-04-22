@@ -46,6 +46,12 @@
     -fx-background-insets: 0;
 }
 
+.text-area .content{
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-color: #444653;
+}
+
 .text-area .scroll-bar {
     -fx-background-color: transparent;
     -fx-background-radius: 0;
@@ -60,8 +66,4 @@
     -fx-border-color: transparent;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
-}
-
-.context-menu {
-    -fx-background-color: #f0f0f0;
 }
