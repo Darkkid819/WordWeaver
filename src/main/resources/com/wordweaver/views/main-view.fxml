@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="bottom-pane" BorderPane.alignment="CENTER">
          <children>
@@ -23,7 +23,7 @@
                <graphic>
                   <ImageView fx:id="submitImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/submit.png" />
+                        <Image url="@../images/submit.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -42,7 +42,7 @@
          <children>
             <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                <image>
-                  <Image url="@images/prompt-logo.png" />
+                  <Image url="@../images/prompt-logo.png" />
                </image>
             </ImageView>
             <TextArea fx:id="chatTextArea" editable="false" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
@@ -52,7 +52,7 @@
                      <graphic>
                         <ImageView fx:id="speechImageView" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/speech.png" />
+                              <Image url="@../images/speech.png" />
                            </image>
                         </ImageView>
                      </graphic>
