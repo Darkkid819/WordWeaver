@@ -27,7 +27,7 @@ public class FileHandler {
                 String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
                 texts.add(content);
                 String[] words = content.split("\\s+");
-                for (String word : words) {
+                for (int i = 0; i < words.length; i++) {
                     currentWords++;
 
                     // Update progress
