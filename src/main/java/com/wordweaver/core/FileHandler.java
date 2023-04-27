@@ -19,20 +19,12 @@ public class FileHandler {
         }
 
         List<String> texts = new LinkedList<>();
-        int totalWords = 0;
+        int totalWords = getTotalWords(files);
         int currentWords = 0;
 
-        // Calculate the total number of words in all files
         for (File file : files) {
             if (file.isFile()) {
-                String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-                totalWords += content.split("\\s+").length;
-            }
-        }
-
-        for (File file : files) {
-            if (file.isFile()) {
-                String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+                String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
                 texts.add(content);
                 String[] words = content.split("\\s+");
                 for (String word : words) {
@@ -47,8 +39,16 @@ public class FileHandler {
         return texts;
     }
 
-    private static boolean isTextFile(File file) {
-        String fileName = file.getName();
-        return fileName.toLowerCase().endsWith(".txt");
+    private static int getTotalWords(File[] files) throws IOException {
+        int totalWords = 0;
+
+        for (File file : files) {
+            if (file.isFile()) {
+                String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+                totalWords += content.split("\\s+").length;
+            }
+        }
+
+        return totalWords;
     }
 }
