@@ -22,17 +22,23 @@ public class Main extends Application {
         hostServices = getHostServices();
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/wordweaver/images/logo.png")));
         stage.setTitle("Word Weaver");
         stage.setScene(scene);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/wordweaver/images/logo.png")));
         stage.show();
+
+        // set minimum window size
         stage.setMinWidth(scene.getWidth());
         stage.setMinHeight(scene.getHeight());
     }
 
-    public static void main(String[] args) throws IOException {
-        GlobalVariables.getInstance().setWordWeaver(WordWeaverBuilder.build(GlobalVariables.getInstance().getDataFolder(),
-                GlobalVariables.getInstance().getBlacklist()));
+    public static void main(String[] args) throws Exception {
+        // if there is a command line argument, use it as the data folder
+        if (args.length > 0) {
+            String dataFolder = args[0];
+            GlobalVariables.getInstance().setWordWeaver(WordWeaverBuilder.build(dataFolder));
+        }
+
         launch(args);
     }
 

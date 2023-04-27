@@ -1,30 +1,32 @@
 package com.wordweaver.util;
 
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BlacklistUtils {
     private final Set<String> blacklist;
 
-    public BlacklistUtils(String blacklistFilePath) throws IOException {
+    public BlacklistUtils(String dataFolder) throws Exception {
         this.blacklist = new HashSet<>();
-        loadBlacklist(blacklistFilePath);
+        loadBlacklist(dataFolder);
     }
 
-    private void loadBlacklist(String filePath) throws IOException {
-        List<String> lines = FileUtils.readLines(filePath);
-        for (String line : lines) {
-            blacklist.add(line.trim().toLowerCase());
+    private void loadBlacklist(String dataFolder) throws Exception {
+        Path blacklistFilePath = Paths.get(dataFolder + "/blacklist.dat");
+        if (!Files.exists(blacklistFilePath)) {
+            return;
         }
+
+        FileEncryptionUtils.readEncryptedFile(blacklistFilePath, blacklist);
     }
 
     public boolean isBlacklisted(String word) {
         return blacklist.contains(word.toLowerCase());
     }
 
-    // return blacklist in case of multiple blacklists
     public Set<String> getBlacklist() {
         return blacklist;
     }

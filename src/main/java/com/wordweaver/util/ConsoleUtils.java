@@ -1,6 +1,4 @@
 package com.wordweaver.util;
-
-
 public class ConsoleUtils {
 
     public static void printLoadingBar(String prefix, int currentProgress, int totalProgress) {

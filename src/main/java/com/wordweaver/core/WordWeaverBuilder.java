@@ -5,15 +5,22 @@ import com.wordweaver.util.BlacklistUtils;
 import com.wordweaver.util.ConsoleUtils;
 import com.wordweaver.util.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 public class WordWeaverBuilder {
 
-    public static MainLinkedList build(String dataFolder, String blacklist) throws IOException {
-        String blacklistFilePath = dataFolder + "/" + blacklist;
+    public static MainLinkedList build(String dataFolder) throws Exception {
+        if (!FileUtils.dataFolderExists(dataFolder)) {
+            System.exit(0);
+        }
+
+        String blacklistFilePath = getBlacklistFilePath(dataFolder);
         BlacklistUtils blacklistUtils = new BlacklistUtils(blacklistFilePath);
         List<String> texts = readTextFiles(dataFolder);
         String[] words = processText(texts, blacklistUtils);
@@ -21,6 +28,22 @@ public class WordWeaverBuilder {
 
         return mainLinkedList;
     }
+
+    private static String getBlacklistFilePath(String dataFolder) {
+        String blacklistFilePath = dataFolder + "/blacklist.dat";
+        File dataFolderFile = new File(dataFolder);
+        String dataFolderName = dataFolderFile.getName();
+
+        if (!Files.exists(Paths.get(blacklistFilePath))) {
+            System.err.println("Blacklist file (blacklist.dat) not found in the specified data folder: " + dataFolderName);
+            return null;
+        }
+
+        return blacklistFilePath;
+    }
+
+    // no command line args
+    public static MainLinkedList build(){ return new MainLinkedList(); }
 
     private static List<String> readTextFiles(String dataFolder) throws IOException {
         List<String> texts = FileHandler.readTextFiles(dataFolder, (currentFile, totalFiles) ->

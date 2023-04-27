@@ -17,9 +17,9 @@ public class BabyLinkedList {
     public void addBabyLink(String word) {
         BabyLink existingBabyLink = findBabyLinkByWord(word);
         if (existingBabyLink == null) {
-            babyLinkList.add(new BabyLink(new WordFrequencyPair(word, 1)));
+            babyLinkList.add(new BabyLink(word, 1));
         } else {
-            existingBabyLink.getWordFrequencyPair().incrementFrequency();
+            existingBabyLink.incrementFrequency();
         }
     }
 
@@ -29,15 +29,15 @@ public class BabyLinkedList {
         }
 
         RandomSelector randomSelector = new RandomSelector();
-        List<String> words = babyLinkList.stream().map(babyLink -> babyLink.getWordFrequencyPair().getWord()).collect(Collectors.toList());
-        List<Integer> frequencies = babyLinkList.stream().map(babyLink -> babyLink.getWordFrequencyPair().getFrequency()).collect(Collectors.toList());
+        List<String> words = babyLinkList.stream().map(babyLink -> babyLink.getWord()).collect(Collectors.toList());
+        List<Integer> frequencies = babyLinkList.stream().map(babyLink -> babyLink.getFrequency()).collect(Collectors.toList());
 
         return randomSelector.selectWeightedRandom(words, frequencies);
     }
 
     private BabyLink findBabyLinkByWord(String word) {
         for (BabyLink babyLink : babyLinkList) {
-            if (babyLink.getWordFrequencyPair().getWord().equals(word)) {
+            if (babyLink.getWord().equals(word)) {
                 return babyLink;
             }
         }

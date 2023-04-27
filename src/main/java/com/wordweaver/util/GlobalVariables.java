@@ -10,7 +10,6 @@ public class GlobalVariables {
     private String dataFolder = "data";
     private String outputFolder = "output";
     private String outputFileName = "output.txt";
-    private String blacklist = "blacklist.txt";
 
     private GlobalVariables() {
         // Exists only to defeat instantiation.
@@ -53,13 +52,5 @@ public class GlobalVariables {
 
     public void setOutputFileName(String outputFileName) {
         this.outputFileName = outputFileName;
-    }
-
-    public String getBlacklist() {
-        return blacklist;
-    }
-
-    public void setBlacklist(String blacklist) {
-        this.blacklist = blacklist;
     }
 }

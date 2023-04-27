@@ -14,20 +14,25 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    @FXML
+    StackPane stackPane;
     @FXML
     TextArea chatTextArea;
     @FXML
@@ -89,6 +94,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void submit(ActionEvent event) {
+        TextToSpeech.stop();
+
         String keyword = keywordTextField.getText();
         String lengthString = lengthTextField.getText();
 
@@ -127,6 +134,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void speak(ActionEvent event) {
+        if (TextToSpeech.isSpeaking()) {
+            TextToSpeech.stop();
+            return;
+        }
         String paragraph = chatTextArea.getText();
         TextToSpeech.speak(paragraph);
     }
@@ -147,6 +158,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void saveAsFile(ActionEvent event) throws IOException {
+        TextToSpeech.stop();
+
         String generatedParagraph = chatTextArea.getText();
 
         if (generatedParagraph.isEmpty()) {
@@ -172,7 +185,9 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void importText(ActionEvent event) throws IOException {
+    private void importText(ActionEvent event) throws Exception {
+        TextToSpeech.stop();
+
         String userDirectory = System.getProperty("user.dir");
         File dataDirectory = new File(userDirectory, GlobalVariables.getInstance().getDataFolder());
 
@@ -183,14 +198,32 @@ public class MainController implements Initializable {
         Window window = chatTextArea.getScene().getWindow();
         File file = fileChooser.showOpenDialog(window);
         if (file != null) {
+            if (GlobalVariables.getInstance().getWordWeaver() == null) {
+                GlobalVariables.getInstance().setWordWeaver(WordWeaverBuilder.build());
+            }
             MainLinkedList wordWeaver = GlobalVariables.getInstance().getWordWeaver();
             String dataFolder = GlobalVariables.getInstance().getDataFolder();
-            String blacklist = GlobalVariables.getInstance().getBlacklist();
-            String blacklistPath = dataFolder + "/" + blacklist;
-            BlacklistUtils blacklistUtils = new BlacklistUtils(blacklistPath);
+            String blacklistPath = dataFolder + "/blacklist.dat";
 
-            Stage progressStage = createProgressPopup();
-            progressStage.show();
+            BlacklistUtils blacklistUtils;
+            if (!Files.exists(Paths.get(blacklistPath))) {
+                System.err.println("Blacklist file (blacklist.dat) not found in the specified data folder: " + dataFolder);
+                blacklistUtils = null;
+            } else {
+                blacklistUtils = new BlacklistUtils(blacklistPath);
+            }
+
+            chatTextArea.setText("");
+            keywordTextField.setText("");
+            lengthTextField.setText("");
+
+            submitButton.setDisable(true);
+            ttsButton.setDisable(true);
+            keywordTextField.setDisable(true);
+            lengthTextField.setDisable(true);
+
+            ProgressIndicator progressIndicator = createProgressIndicator();
+            stackPane.getChildren().add(progressIndicator);
 
             Task<Void> task = new Task<Void>() {
                 @Override
@@ -200,30 +233,34 @@ public class MainController implements Initializable {
                 }
             };
 
-            task.setOnSucceeded(e -> progressStage.close());
-            task.setOnFailed(e -> progressStage.close());
+            task.setOnSucceeded(e -> {
+                stackPane.getChildren().remove(progressIndicator);
+                submitButton.setDisable(false);
+                ttsButton.setDisable(false);
+                keywordTextField.setDisable(false);
+                lengthTextField.setDisable(false);
+            });
+            task.setOnFailed(e -> {
+                stackPane.getChildren().remove(progressIndicator);
+                submitButton.setDisable(false);
+                ttsButton.setDisable(false);
+                keywordTextField.setDisable(false);
+                lengthTextField.setDisable(false);
+            });
 
             new Thread(task).start();
         }
     }
 
-    private Stage createProgressPopup() {
-        // Create a progress indicator
+    private ProgressIndicator createProgressIndicator() {
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setMaxSize(100, 100);
         progressIndicator.setStyle("-fx-background-color: #444653;");
 
-        // Create a new stage for the progress popup
-        Stage progressStage = new Stage();
-        progressStage.initModality(Modality.APPLICATION_MODAL);
-        progressStage.setResizable(false);
-        progressStage.initStyle(StageStyle.UNDECORATED);
+        // Position the progress indicator at the center of the StackPane
+        StackPane.setAlignment(progressIndicator, Pos.CENTER);
 
-        // Create a scene with the progress indicator and add it to the stage
-        Scene progressScene = new Scene(progressIndicator);
-        progressStage.setScene(progressScene);
-
-        return progressStage;
+        return progressIndicator;
     }
 
     @FXML

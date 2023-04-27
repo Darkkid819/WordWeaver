@@ -3,7 +3,6 @@ package com.wordweaver.core;
 import com.wordweaver.model.BabyLinkedList;
 import com.wordweaver.model.MainLinkedList;
 
-
 public class TextGenerator {
 
     private MainLinkedList mainLinkedList;

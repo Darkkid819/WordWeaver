@@ -47,4 +47,13 @@ public class FileUtils {
         String randomId = UUID.randomUUID().toString().substring(0, 8);
         return formattedDate + "_" + randomId + ".txt";
     }
+
+    public static boolean dataFolderExists(String dataFolder) {
+        File file = new File(dataFolder);
+        if (!file.exists()) {
+            System.err.println("Critical error data folder path not found: " + dataFolder);
+            return false;
+        }
+        return true;
+    }
 }

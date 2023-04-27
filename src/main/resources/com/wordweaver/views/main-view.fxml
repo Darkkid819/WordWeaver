@@ -11,81 +11,83 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wordweaver.controller.MainController">
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="bottom-pane" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="keywordTextField" prefWidth="200.0" promptText="Please enter a word" />
-            <TextField fx:id="lengthTextField" prefWidth="200.0" promptText="Please enter text length" />
-            <Button fx:id="submitButton" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#submit" onMousePressed="#changeSubmitImagePressed" onMouseReleased="#changeSubmitImageReleased" prefWidth="100.0" text="Submit">
-               <graphic>
-                  <ImageView fx:id="submitImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/submit.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-         </children>
-         <padding>
-            <Insets left="75.0" right="75.0" />
-         </padding>
-      </HBox>
-   </bottom>
-   <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="middle-pane" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-               <image>
-                  <Image url="@../images/prompt-logo.png" />
-               </image>
-            </ImageView>
-            <TextArea fx:id="chatTextArea" editable="false" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
-            <VBox alignment="BOTTOM_CENTER" prefHeight="430.0" prefWidth="47.0">
-               <children>
-                  <Button fx:id="ttsButton" mnemonicParsing="false" onAction="#speak" onMousePressed="#changeSpeechImagePressed" onMouseReleased="#changeSpeechImageReleased" prefHeight="37.0" prefWidth="39.0">
-                     <graphic>
-                        <ImageView fx:id="speechImageView" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/speech.png" />
-                           </image>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="bottom-pane" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="keywordTextField" prefWidth="200.0" promptText="Please enter a word" />
+                <TextField fx:id="lengthTextField" prefWidth="200.0" promptText="Please enter text length" />
+                <Button fx:id="submitButton" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#submit" onMousePressed="#changeSubmitImagePressed" onMouseReleased="#changeSubmitImageReleased" prefWidth="100.0" text="Submit">
+                    <graphic>
+                        <ImageView fx:id="submitImageView" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/submit.png" />
+                            </image>
                         </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-   </center>
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveFile" text="Save" />
-                  <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveAsFile" text="Save As" />
-                  <MenuItem fx:id="importMenuItem" mnemonicParsing="false" onAction="#importText" text="Import" />
-                  <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" onAction="#quit" text="Quit" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem fx:id="documentationMenuItem" mnemonicParsing="false" onAction="#openDocumentation" text="Documentation" />
-                  <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#showAboutDialog" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets left="75.0" right="75.0" />
+            </padding>
+        </HBox>
+    </bottom>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveFile" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveAsFile" text="Save As" />
+                        <MenuItem fx:id="importMenuItem" mnemonicParsing="false" onAction="#importText" text="Import" />
+                        <MenuItem fx:id="quitMenuItem" mnemonicParsing="false" onAction="#quit" text="Quit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="documentationMenuItem" mnemonicParsing="false" onAction="#openDocumentation" text="Documentation" />
+                        <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#showAboutDialog" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0" stylesheets="@../css/style.css" BorderPane.alignment="CENTER">
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="middle-pane">
+                    <children>
+                        <ImageView fitHeight="57.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                            <image>
+                                <Image url="@../images/prompt-logo.png" />
+                            </image>
+                        </ImageView>
+                        <TextArea fx:id="chatTextArea" editable="false" prefHeight="200.0" wrapText="true" HBox.hgrow="ALWAYS" />
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="430.0" prefWidth="47.0">
+                            <children>
+                                <Button fx:id="ttsButton" mnemonicParsing="false" onAction="#speak" onMousePressed="#changeSpeechImagePressed" onMouseReleased="#changeSpeechImageReleased" prefHeight="37.0" prefWidth="39.0">
+                                    <graphic>
+                                        <ImageView fx:id="speechImageView" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/speech.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </StackPane>
+    </center>
 </BorderPane>
