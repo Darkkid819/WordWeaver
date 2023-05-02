@@ -17,13 +17,13 @@ public class WordWeaverBuilder {
             System.exit(0);
         }
 
-        String blacklistFilePath = FileUtils.getBlacklistFilePath(dataFolder).orElse(null);
+        String blacklistFilePath = FileUtils.getBlacklistFilePath(dataFolder);
         BlacklistUtils blacklistUtils = new BlacklistUtils(blacklistFilePath);
         List<String> texts = readTextFiles(dataFolder);
         String[] words = processText(texts, blacklistUtils);
-        MainLinkedList mainLinkedList = trainModel(words);
+        MainLinkedList wordWeaver = trainModel(words);
 
-        return mainLinkedList;
+        return wordWeaver;
     }
 
     private static List<String> readTextFiles(String dataFolder) throws IOException {

@@ -1,6 +1,5 @@
 package com.wordweaver.util;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -12,20 +11,16 @@ public class BlacklistUtils {
     private final Set<String> blacklist;
 
     public BlacklistUtils(String dataFolder) throws Exception {
-        if (dataFolder == null || dataFolder.isEmpty()) {
-            throw new IllegalArgumentException("Invalid data folder: " + dataFolder);
-        }
-
         this.blacklist = new HashSet<>();
-        loadBlacklist(dataFolder, "blacklist.dat");
+        loadBlacklist(dataFolder);
     }
 
-    private void loadBlacklist(String dataFolder, String fileName) throws Exception {
-        Path blacklistFilePath = Paths.get(dataFolder, fileName);
-        if (!Files.exists(blacklistFilePath)) {
+    private void loadBlacklist(String dataFolder) throws Exception {
+        if (dataFolder == null) {
             return;
         }
 
+        Path blacklistFilePath = Paths.get(dataFolder);
         FileEncryptionUtils.readEncryptedFile(blacklistFilePath, blacklist);
     }
 

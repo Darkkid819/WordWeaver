@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.UUID;
 
 public class FileUtils {
@@ -51,12 +50,13 @@ public class FileUtils {
         return true;
     }
 
-    public static Optional<String> getBlacklistFilePath(String dataFolder) {
-        String blacklistFilePath = dataFolder + "/blacklist.dat";
-        if (!Files.exists(Paths.get(blacklistFilePath))) {
-            return Optional.empty();
+    public static String getBlacklistFilePath(String dataFolder) {
+        Path blacklistFilePath = Paths.get(dataFolder + "/blacklist.dat");
+        if (!Files.exists(blacklistFilePath)) {
+            System.err.println("Blacklist file (blacklist.dat) not found in the specified data folder: " + new File(dataFolder).getName());
+            return null;
         }
 
-        return Optional.of(blacklistFilePath);
+        return blacklistFilePath.toString();
     }
 }

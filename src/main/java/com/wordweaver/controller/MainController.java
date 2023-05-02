@@ -12,6 +12,7 @@ import com.wordweaver.util.TextToSpeech;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -19,7 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.*;
 
@@ -63,9 +63,9 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chatTextArea.setOnContextMenuRequested(event -> event.consume());
-        keywordTextField.setOnContextMenuRequested(event -> event.consume());
-        lengthTextField.setOnContextMenuRequested(event -> event.consume());
+        chatTextArea.setOnContextMenuRequested(Event::consume);
+        keywordTextField.setOnContextMenuRequested(Event::consume);
+        lengthTextField.setOnContextMenuRequested(Event::consume);
     }
 
     @FXML
@@ -226,7 +226,7 @@ public class MainController implements Initializable {
             ProgressIndicator progressIndicator = createProgressIndicator();
             stackPane.getChildren().add(progressIndicator);
 
-            Task<Void> task = new Task<Void>() {
+            Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
                     WordWeaverBuilder.addTextToModel(wordWeaver, file.getAbsolutePath(), blacklistUtils);
@@ -284,14 +284,10 @@ public class MainController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("Word Weaver");
-        String aboutText = "Version: 1.0.0\n"
-                + "Author: Jordan Mitacek\n"
-                + "Description: Word Weaver is an intelligent text generation application that uses a Markov chain " +
-                "model to create realistic, coherent paragraphs based on a provided seed word. Users can easily import text " +
-                "files for training the model, set a blacklist to exclude specific words, and generate paragraphs with a " +
-                "specified length. The application also offers an intuitive user interface for easy interaction, text-to-speech functionality, " +
-                "and options to save generated text. This versatile tool is perfect for writers, content creators, and anyone seeking " +
-                "inspiration for their creative projects.";
+        String aboutText = """
+                Version: 1.0.0
+                Author: Jordan Mitacek
+                Description: Word Weaver is an intelligent text generation application that uses a Markov chain model to create realistic, coherent paragraphs based on a provided seed word. Users can easily import text files for training the model, set a blacklist to exclude specific words, and generate paragraphs with a specified length. The application also offers an intuitive user interface for easy interaction, text-to-speech functionality, and options to save generated text. This versatile tool is perfect for writers, content creators, and anyone seeking inspiration for their creative projects.""";
         alert.setContentText(aboutText);
         alert.showAndWait();
     }
