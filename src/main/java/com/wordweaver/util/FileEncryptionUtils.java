@@ -10,6 +10,7 @@ public class FileEncryptionUtils {
     // 256-bit key
     private static final byte[] encryptionKey = "iUU68NkHFyxB3VvYSyfQPwBj8SJSPBhg".getBytes();
 
+    // used to encrypt the blacklist file
     public static void encryptFile(Path inputFilePath, Path outputFilePath) throws Exception {
         SecretKeySpec secretKey = new SecretKeySpec(encryptionKey, "AES");
         Cipher cipher = Cipher.getInstance("AES");
@@ -21,6 +22,7 @@ public class FileEncryptionUtils {
         Files.write(outputFilePath, encryptedBytes);
     }
 
+    // used to decrypt the blacklist file
     public static void readEncryptedFile(Path inputFilePath, Set<String> set) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
         SecretKeySpec secretKey = new SecretKeySpec(encryptionKey, "AES");

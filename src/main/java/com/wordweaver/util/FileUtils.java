@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class FileUtils {
@@ -22,21 +22,16 @@ public class FileUtils {
         return content.toString();
     }
 
-    public static List<String> readLines(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        return Files.readAllLines(path);
-    }
-
     public static void writeFile(String content, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(content);
         }
     }
 
-    public static void createDirectory(String directoryPath) {
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
+    public static void createDirectory(String directoryPath) throws IOException {
+        Path directory = Paths.get(directoryPath);
+        if (!Files.exists(directory)) {
+            Files.createDirectories(directory);
         }
     }
 
@@ -48,12 +43,20 @@ public class FileUtils {
         return formattedDate + "_" + randomId + ".txt";
     }
 
-    public static boolean dataFolderExists(String dataFolder) {
-        File file = new File(dataFolder);
-        if (!file.exists()) {
-            System.err.println("Critical error data folder path not found: " + dataFolder);
-            return false;
+    public static boolean dataFolderExists(String dataFolder) throws IOException {
+        Path folder = Paths.get(dataFolder);
+        if (!Files.exists(folder)) {
+            throw new IOException("Data folder path not found: " + dataFolder);
         }
         return true;
+    }
+
+    public static Optional<String> getBlacklistFilePath(String dataFolder) {
+        String blacklistFilePath = dataFolder + "/blacklist.dat";
+        if (!Files.exists(Paths.get(blacklistFilePath))) {
+            return Optional.empty();
+        }
+
+        return Optional.of(blacklistFilePath);
     }
 }

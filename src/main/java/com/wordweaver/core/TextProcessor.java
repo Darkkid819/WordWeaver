@@ -4,13 +4,10 @@ import com.wordweaver.util.BlacklistUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextProcessor {
-
-    // Method to split a string into words
     private static String[] tokenize(String inputText) {
         //includes words and punctuation
         Pattern pattern = Pattern.compile("\\b\\w+([’']\\w+)?\\b|[.,!?;:`]");
@@ -24,49 +21,15 @@ public class TextProcessor {
         return words.toArray(new String[0]);
     }
 
-    private static String removeUnwantedCharacters(String inputText, String[] unwantedCharacters) {
-        if (unwantedCharacters == null || unwantedCharacters.length == 0) {
-            return inputText;
-        }
-
-        String regex = "[" + String.join("", unwantedCharacters) + "]";
-        return inputText.replaceAll(regex, "");
-    }
-
-    // Method to filter out blacklisted words from an array of words
-    private static String[] filterWords(String[] words, BlacklistUtils blacklistUtils, BiConsumer<Integer, Integer> progressCallback) {
-        if (blacklistUtils == null) {
-            return words;
-        }
-
-        List<String> filteredWords = new LinkedList<>();
-        int totalWords = words.length;
-        for (int i = 0; i < totalWords; i++) {
-            String word = words[i];
-            if (!blacklistUtils.isBlacklisted(word)) {
-                filteredWords.add(word);
-            }
-
-            // Update progress
-            if (progressCallback != null)
-                progressCallback.accept(i + 1, totalWords);
-        }
-
-        return filteredWords.toArray(new String[0]);
-    }
-
-    // Method to process text by tokenizing, filtering, and removing unwanted characters
-    public static String[] processText(List<String> texts, String[] unwantedCharacters, BlacklistUtils blacklistUtils, BiConsumer<Integer, Integer> progressCallback) {
+    // Method to process text by tokenizing and filtering words
+    public static String[] processText(List<String> texts, BlacklistUtils blacklistUtils) {
         String inputText = String.join(" ", texts);
-
-        if (unwantedCharacters != null && unwantedCharacters.length > 0) {
-            inputText = removeUnwantedCharacters(inputText, unwantedCharacters);
-        }
 
         String[] words = tokenize(inputText);
 
-        if (blacklistUtils != null)
-            words = filterWords(words, blacklistUtils, progressCallback);
+        if (blacklistUtils != null) {
+            words = blacklistUtils.replaceBlacklistedWords(words, "");
+        }
 
         return words;
     }
